@@ -21,13 +21,25 @@ app.get('/api/courses', (req, res) => {
     res.json(courses);
 })
 
-app.get('/api/courses', (req, res)=>{
+app.get('/api/courses/:id', (req, res)=> {
     //Keresés a tömbben
-    const course = find(course.id === parseInt(req.params.id));
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send('A megadott id-val nem létezik kurzus!');  res.json(course);
 })
 
+
+app.post('/api/courses', (req, res) => {
+    const course = {
+        id: courses.length +1,
+        name: req.body.name
+    }
+
+    courses.push(course);
+    res.json(req.body);
+})
 
 //A webszerver elindítása
 app.listen(port, () => {
     console.log(`A webszerver figyel a localhost:${port} webcímen`);
-})
+}) 
+
